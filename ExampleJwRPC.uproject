@@ -1,0 +1,13 @@
+{
+	"FileVersion": 3,
+	"EngineAssociation": "{D0D24B31-42D1-A86E-D842-0CBCF94B3B00}",
+	"Category": "",
+	"Description": "",
+	"Modules": [
+		{
+			"Name": "ExampleJwRPC",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
+		}
+	]
+}

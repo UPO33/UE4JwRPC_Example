@@ -45,12 +45,16 @@ function OnConnection(ws){
 
     ws.on('close', function (code, reason){
         console.log('closed', {code, reason});
+        //the closed connection is not a logged in user ?
+        if(!this._conn.username)
+            return;
+
         //tell other clients  the user left
-        for(let wsc of wss.clients){
-            if(!wsc || wsc === this)
+        for(let clientWS of wss.clients){
+            if(!clientWS || clientWS === this || !clientWS._conn.username)
                 continue;
 
-            wsc._conn.Notify('userLogout', wsc._conn.username );
+            clientWS._conn.Notify('userLogout', ws._conn.username );
         }
     });
     

@@ -9,6 +9,6 @@ public class ExampleJwRPCTarget : TargetRules
 	{
 		Type = TargetType.Game;
 
-		ExtraModuleNames.AddRange( new string[] { "ExampleJwRPC" } );
+		ExtraModuleNames.AddRange( new string[] { "ExampleJwRPC", } );
 	}
 }

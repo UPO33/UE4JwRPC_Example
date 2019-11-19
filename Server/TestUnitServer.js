@@ -12,14 +12,29 @@ function check(exp)
 
 /**@type {WebSocket.Server} */
 let wss = null;
+let gNumRequetCalled = 0;
+let gNumRequetCalledAtAll = 0;
+let gNumRpcHandled = 0;
+
+setInterval(function(){
+
+    console.log({gNumRequetCalled, gNumRpcHandled, gNumRequetCalledAtAll});
+
+    gNumRpcHandled = 0;
+    gNumRequetCalled = 0;
+
+}, 3000);
 
 function MakeMethod(func){
     return new JwRPC.MethodInfo(function(peer, params, callback){
-        console.log(`-----------${func.name}-----------`);
-        console.log(params);
+        //console.log(`-----------${func.name}-----------`);
+        //console.log(params);
+        gNumRpcHandled++;
+        gNumRequetCalledAtAll++;
+        
         func(peer, params, callback);
 
-    }, false, 10000, 1);
+    }, false, 99999999, 1);
 };
 
 const gRpcs = {
@@ -34,7 +49,7 @@ function OnNotiHi(peer, params, callback){
 function OnReqSum(peer, params, callback){
     setTimeout(function(){
         callback(null, (params.a + params.b));
-    }, Math.random() * 3000);
+    }, Math.random() * 2);
    
 }
 function OnReqTimeout(peer, params, callback){
@@ -79,14 +94,15 @@ function QueueTasks(conn)
 {
     return;
 
-    const base = 1000;
-    const mul = 1000;
+    const base = 100;
+    const mul = 100;
 
     const theFunc = setInterval;
     
     theFunc(function(){
         conn.Request('testEcho', 'hello').then(function(result){
             assert(result === 'hello');
+            gNumRpcHandled++;
         }).catch(function(error){
             throw (error);
         });
@@ -97,6 +113,7 @@ function QueueTasks(conn)
         conn.Request('testTimeout', 'hello').then(function(result){
         }).catch(function(error){
             assert(error.code === JwRPC.Errors.Timeout.code);
+            gNumRpcHandled++;
         });
     }, base + Math.random() * mul);
 
@@ -105,6 +122,7 @@ function QueueTasks(conn)
             assert(false);
         }).catch(function(error){
             assert(error.code === JwRPC.Errors.Timeout.code);
+            gNumRpcHandled++;
         });
     }, base + Math.random() * mul);
 
@@ -114,6 +132,7 @@ function QueueTasks(conn)
             assert(false);
         }).catch(function(error){
             assert(error.code === 666);
+            gNumRpcHandled++;
         });
     }, base + Math.random() * mul);
 
@@ -123,6 +142,7 @@ function QueueTasks(conn)
         const curNum = conn.testCounter;
         conn.Request('testRequestCounter', []).then(function(result){
             assert(curNum === result);
+            gNumRpcHandled++;
         }).catch(function(error){
             assert(false);
         });
@@ -131,6 +151,7 @@ function QueueTasks(conn)
     
     theFunc(function(){
         conn.Notify('notiHi', 'hi');
+        gNumRpcHandled++;
     }, base + Math.random() * mul);
 }
 

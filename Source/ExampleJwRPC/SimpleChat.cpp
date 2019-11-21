@@ -40,10 +40,10 @@ USimpleChatConnection::USimpleChatConnection()
 
 void USimpleChatConnection::BindCallbacks()
 {
-	this->RegisterNotificationCallback("userLogout"		, FNotifyCallbackBase::CreateUObject(this, &USimpleChatConnection::OnUserLogout));
-	this->RegisterNotificationCallback("userLogin"		, FNotifyCallbackBase::CreateUObject(this, &USimpleChatConnection::OnUserLogin));
-	this->RegisterNotificationCallback("userIsTyping"	, FNotifyCallbackBase::CreateUObject(this, &USimpleChatConnection::OnUserIsTyping));
-	this->RegisterNotificationCallback("message"		, FNotifyCallbackBase::CreateUObject(this, &USimpleChatConnection::OnMessage));
+	this->RegisterNotificationCallback("userLogout"		, FNotifyCB::CreateUObject(this, &USimpleChatConnection::OnUserLogout));
+	this->RegisterNotificationCallback("userLogin"		, FNotifyCB::CreateUObject(this, &USimpleChatConnection::OnUserLogin));
+	this->RegisterNotificationCallback("userIsTyping"	, FNotifyCB::CreateUObject(this, &USimpleChatConnection::OnUserIsTyping));
+	this->RegisterNotificationCallback("message"		, FNotifyCB::CreateUObject(this, &USimpleChatConnection::OnMessage));
 }
 
 void USimpleChatConnection::OnPostLogin()

@@ -18,7 +18,7 @@ let gNumRpcHandled = 0;
 
 setInterval(function(){
 
-    console.log({gNumRequetCalled, gNumRpcHandled, gNumRequetCalledAtAll});
+    console.log({gNumRequetCalled, gNumRpcHandled});
 
     gNumRpcHandled = 0;
     gNumRequetCalled = 0;
@@ -30,8 +30,7 @@ function MakeMethod(func){
         //console.log(`-----------${func.name}-----------`);
         //console.log(params);
         gNumRpcHandled++;
-        gNumRequetCalledAtAll++;
-        
+
         func(peer, params, callback);
 
     }, false, 99999999, 1);
@@ -92,17 +91,16 @@ function OnConnection(ws){
 
 function QueueTasks(conn)
 {
-    return;
-
-    const base = 100;
+    const base = 1000;
     const mul = 100;
 
     const theFunc = setInterval;
     
     theFunc(function(){
+        gNumRequetCalled++;
         conn.Request('testEcho', 'hello').then(function(result){
             assert(result === 'hello');
-            gNumRpcHandled++;
+            
         }).catch(function(error){
             throw (error);
         });
@@ -110,39 +108,38 @@ function QueueTasks(conn)
     
 
     theFunc(function(){
+        gNumRequetCalled++;
         conn.Request('testTimeout', 'hello').then(function(result){
         }).catch(function(error){
             assert(error.code === JwRPC.Errors.Timeout.code);
-            gNumRpcHandled++;
         });
     }, base + Math.random() * mul);
 
     theFunc(function(){
+        gNumRequetCalled++;
         conn.Request('testLongTime', null).then(function(result){
-            assert(false);
         }).catch(function(error){
-            assert(error.code === JwRPC.Errors.Timeout.code);
-            gNumRpcHandled++;
+            throw error;
         });
     }, base + Math.random() * mul);
 
 
     theFunc(function(){
+        gNumRequetCalled++;
         conn.Request('testError666', {}).then(function(result){
             assert(false);
         }).catch(function(error){
             assert(error.code === 666);
-            gNumRpcHandled++;
         });
     }, base + Math.random() * mul);
 
 
     theFunc(function(){
+        gNumRequetCalled++;
         conn.testCounter++;
         const curNum = conn.testCounter;
         conn.Request('testRequestCounter', []).then(function(result){
             assert(curNum === result);
-            gNumRpcHandled++;
         }).catch(function(error){
             assert(false);
         });
@@ -151,7 +148,7 @@ function QueueTasks(conn)
     
     theFunc(function(){
         conn.Notify('notiHi', 'hi');
-        gNumRpcHandled++;
+        gNumRequetCalled++;
     }, base + Math.random() * mul);
 }
 

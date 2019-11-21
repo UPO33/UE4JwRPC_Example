@@ -83,13 +83,13 @@ public:
 
 	void BindCallbacks()
 	{
-		RegisterRequestCallback("testEcho"				, FRequestCallbackBase::CreateUObject(this, &UTestUnitConnection::OnTestEcho));
-		RegisterRequestCallback("testTimeout"			, FRequestCallbackBase::CreateUObject(this, &UTestUnitConnection::OnTestTimeout));
-		RegisterRequestCallback("testLongTime"			, FRequestCallbackBase::CreateUObject(this, &UTestUnitConnection::OnTestLongTime));
-		RegisterRequestCallback("testError666"			, FRequestCallbackBase::CreateUObject(this, &UTestUnitConnection::OnTestError666));
-		RegisterRequestCallback("testRequestCounter"    , FRequestCallbackBase::CreateUObject(this, &UTestUnitConnection::OnRequestCounter));
+		RegisterRequestCallback("testEcho"				, FRequestCB::CreateUObject(this, &UTestUnitConnection::OnTestEcho));
+		RegisterRequestCallback("testTimeout"			, FRequestCB::CreateUObject(this, &UTestUnitConnection::OnTestTimeout));
+		RegisterRequestCallback("testLongTime"			, FRequestCB::CreateUObject(this, &UTestUnitConnection::OnTestLongTime));
+		RegisterRequestCallback("testError666"			, FRequestCB::CreateUObject(this, &UTestUnitConnection::OnTestError666));
+		RegisterRequestCallback("testRequestCounter"    , FRequestCB::CreateUObject(this, &UTestUnitConnection::OnRequestCounter));
 
-		RegisterNotificationCallback("notiHi", FNotifyCallbackBase::CreateUObject(this, &UTestUnitConnection::NotiHi));
+		RegisterNotificationCallback("notiHi", FNotifyCB::CreateUObject(this, &UTestUnitConnection::NotiHi));
 	}
 
 	void OnTestEcho(TSharedPtr<FJsonValue> params, FJwRpcIncomingRequest& request)
@@ -106,7 +106,7 @@ public:
 		GameMode->GetWorldTimerManager().SetTimer(th, [=]() {
 			request.FinishSuccess("{}");
 
-		}, 20, false);
+		}, 6, false);
 	}
 	void OnTestError666(TSharedPtr<FJsonValue> params, FJwRpcIncomingRequest& request)
 	{

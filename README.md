@@ -1,5 +1,5 @@
 # UE4JwRPC_Example
-this is a UE4 project containing several samples to show how to use [UE4JwRPC](https://github.com/upo33/)
+this is a UE4 project containing several samples to show how to use [UE4JwRPC](https://github.com/UPO33/UE4JwRPC)
 
 
 ----
@@ -22,7 +22,7 @@ nodejs SimpleChatServer.js
 now our server should be ready and listening for client connections
     
 
-#### how to run examples ?
+#### how to run client samples ?
 from editor or standalone build open the map you want. (Map_SimpleChatBP, Map_SimpleChatCPP, ... )
 
 

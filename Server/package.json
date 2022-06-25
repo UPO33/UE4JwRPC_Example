@@ -10,7 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "jwrpc": "0.0.3",
-    "ws": "^7.2.0",
-    "yargs": "^14.2.0"
+    "ws": "^7.5.8",
+    "yargs": "^14.2.3"
   }
 }
